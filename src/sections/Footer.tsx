@@ -3,9 +3,9 @@ import { MapPin, Mail, Phone, Linkedin, Instagram, Youtube, Palette } from 'luci
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useState } from 'react';
+import { LegalModal } from '@/components/LegalModal';   // ← AJOUTE CETTE LIGNE
 
 gsap.registerPlugin(ScrollTrigger);
-
 const navLinks = [
   { label: 'Accueil', href: '#hero' },
   { label: 'Compétences', href: '#skills' },
