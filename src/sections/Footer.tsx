@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { MapPin, Mail, Phone, Linkedin, Instagram, Youtube, Palette } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,6 +29,7 @@ const socialLinks = [
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  const [showLegal, setShowLegal] = useState(false);
 
   useEffect(() => {
     const footer = footerRef.current;
@@ -106,47 +108,55 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact + Mentions légales */}
           <div className="footer-col">
             <h4 className="text-caption text-[#f5ebe0] mb-4">Contact</h4>
             <div className="space-y-3">
-              <a
-                href="mailto:tojo.devpro@gmail.com"
-                className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#f5ebe0] transition-colors"
-              >
+              <a href="mailto:tojo.devpro@gmail.com" className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#f5ebe0] transition-colors">
                 <Mail size={14} />
                 tojo.devpro@gmail.com
               </a>
-              <a
-                href="tel:+261387729958"
-                className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#f5ebe0] transition-colors"
-              >
+              <a href="tel:+261387729958" className="flex items-center gap-2 text-sm text-[#94a3b8] hover:text-[#f5ebe0] transition-colors">
                 <Phone size={14} />
                 +261 38 77 299 58
               </a>
-              <div className="flex gap-3 mt-4">
+
+              <div className="flex gap-3 mt-6">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
                     href={social.href}
                     aria-label={social.label}
-                    className="w-9 h-9 rounded-full bg-[rgba(255,255,255,0.06)] flex items-center justify-center text-[#94a3b8] hover:bg-[rgba(231,111,81,0.15)] hover:text-[#e76f51] transition-all duration-200"
+                    className="w-9 h-9 rounded-full bg-[rgba(255,255,255,0.06)] flex items-center justify-center text-[#94a3b8] hover:bg-[rgba(231,111,81,0.15)] hover:text-[#e76f51] transition-all"
                   >
                     {social.icon}
                   </a>
                 ))}
               </div>
             </div>
+
+            {/* Lien Mentions Légales */}
+            <button
+              onClick={() => setShowLegal(true)}
+              className="mt-8 text-xs text-[#64748b] hover:text-[#94a3b8] transition-colors underline-offset-4 hover:underline"
+            >
+              Mentions légales • Politique de confidentialité
+            </button>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-6 border-t border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-6 border-t border-[rgba(255,255,255,0.06)] text-center sm:text-left">
           <p className="text-sm text-[#64748b]">
-            &copy; 2025 Tojo Nambinina. Tous droits réservés.
+            © 2025 Tojo Nambinina. Tous droits réservés.
           </p>
         </div>
       </div>
+
+      {/* Modal Mentions Légales */}
+      {showLegal && (
+        <LegalModal onClose={() => setShowLegal(false)} />
+      )}
     </footer>
   );
 }
