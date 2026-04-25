@@ -15,9 +15,11 @@ type VideoCardProps = {
 
 function VideoCard({ title, src, poster }: VideoCardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (!videoRef.current) return;
 
     if (isPlaying) {
@@ -25,7 +27,15 @@ function VideoCard({ title, src, poster }: VideoCardProps) {
       return;
     }
 
-    void videoRef.current.play();
+    setHasError(false);
+    setIsLoading(true);
+
+    try {
+      await videoRef.current.play();
+    } catch {
+      setIsLoading(false);
+      setHasError(true);
+    }
   };
 
   return (
@@ -41,10 +51,23 @@ function VideoCard({ title, src, poster }: VideoCardProps) {
           poster={poster}
           preload="metadata"
           playsInline
-          controls={isPlaying}
+          controls
           onEnded={() => setIsPlaying(false)}
-          onPause={() => setIsPlaying(false)}
-          onPlay={() => setIsPlaying(true)}
+          onPause={() => {
+            setIsPlaying(false);
+            setIsLoading(false);
+          }}
+          onPlay={() => {
+            setIsPlaying(true);
+            setIsLoading(false);
+            setHasError(false);
+          }}
+          onWaiting={() => setIsLoading(true)}
+          onCanPlay={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false);
+            setHasError(true);
+          }}
         >
           <source src={src} type="video/mp4" />
           Votre navigateur ne prend pas en charge cette video.
@@ -52,14 +75,38 @@ function VideoCard({ title, src, poster }: VideoCardProps) {
 
         {!isPlaying && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-            <motion.button
-              onClick={togglePlay}
-              className="flex h-20 w-20 items-center justify-center rounded-full bg-[rgba(231,111,81,0.9)] transition-all duration-300 hover:scale-110 hover:bg-[#e76f51]"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Play size={32} className="ml-1 text-white" fill="white" />
-            </motion.button>
+            <div className="flex flex-col items-center gap-4 px-6 text-center">
+              <motion.button
+                onClick={() => void togglePlay()}
+                className="flex h-20 w-20 items-center justify-center rounded-full bg-[rgba(231,111,81,0.9)] transition-all duration-300 hover:scale-110 hover:bg-[#e76f51]"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Play size={32} className="ml-1 text-white" fill="white" />
+              </motion.button>
+
+              {isLoading && (
+                <p className="text-sm text-[#f5ebe0]">
+                  Chargement de la video...
+                </p>
+              )}
+
+              {hasError && (
+                <div className="space-y-2">
+                  <p className="text-sm text-[#f5ebe0]">
+                    La video ne peut pas etre lue pour le moment.
+                  </p>
+                  <a
+                    href={src}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex rounded-full border border-white/20 bg-black/40 px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#f5ebe0] transition-colors hover:border-[#f4a261] hover:text-[#f4a261]"
+                  >
+                    Ouvrir la video
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
