@@ -202,6 +202,7 @@ export function ShowreelSection() {
           <ExternalVideoCard
             title="Film XUL VF"
             poster="/images/xul.jpg"
+            href="https://youtu.be/FHheqYCMVXc"
           />
         </div>
       </div>
