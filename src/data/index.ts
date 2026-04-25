@@ -22,7 +22,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Adobe Illustrator', proficiency: 4, icon: 'PenTool' },
       { name: 'CapCut Studio', proficiency: 5, icon: 'Scissors' },
       { name: 'Figma', proficiency: 4, icon: 'Layout' },
-      { name: 'Blender 3D', proficiency: 3, icon: 'Box' },
+      { name: ' 3D', proficiency: 3, icon: 'Box' },
     ],
   },
 ];
