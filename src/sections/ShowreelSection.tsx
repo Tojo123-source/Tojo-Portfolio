@@ -39,12 +39,15 @@ function VideoCard({ title, src, poster }: VideoCardProps) {
           ref={videoRef}
           className="h-full w-full object-cover"
           poster={poster}
+          preload="metadata"
+          playsInline
           controls={isPlaying}
           onEnded={() => setIsPlaying(false)}
           onPause={() => setIsPlaying(false)}
           onPlay={() => setIsPlaying(true)}
         >
           <source src={src} type="video/mp4" />
+          Votre navigateur ne prend pas en charge cette video.
         </video>
 
         {!isPlaying && (
@@ -108,7 +111,11 @@ export function ShowreelSection() {
             src="/videos/hero-bg.mp4"
             poster="/images/showreel-poster.jpg"
           />
-          <VideoCard title="Film XUL VF" src="/videos/XUL VF.mp4" />
+          <VideoCard
+            title="Film XUL VF"
+            src="/videos/xul-vf.mp4"
+            poster="/images/xul.jpg"
+          />
         </div>
       </div>
     </section>
