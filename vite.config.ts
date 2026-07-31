@@ -4,7 +4,11 @@ import type { IncomingMessage, ServerResponse } from "node:http"
 import react from "@vitejs/plugin-react"
 import { defineConfig, type ViteDevServer } from "vite"
 import { inspectAttr } from 'kimi-plugin-inspect-react'
+import vercel from "vite-plugin-vercel/vite"
+import { getVercelEntries } from "vite-plugin-vercel"
 import contactHandler from "./api/contact"
+
+const apiEntries = await getVercelEntries("api", { destination: "api" })
 
 // Load .env manually for the dev middleware (process.env isn't auto-populated)
 function loadEnvFile() {
@@ -61,7 +65,7 @@ function contactApiPlugin() {
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [inspectAttr(), react(), contactApiPlugin()],
+  plugins: [vercel({ entries: apiEntries }), inspectAttr(), react(), contactApiPlugin()],
   server: {
     port: 3000,
   },
