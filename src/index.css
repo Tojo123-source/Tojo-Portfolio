@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 30 23% 93%;
+    --card: 232 42% 14%;
+    --card-foreground: 30 23% 93%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 30 23% 93%;
+    --primary: 15 76% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 230 30% 12%;
+    --secondary-foreground: 30 23% 93%;
+    --muted: 230 15% 18%;
+    --muted-foreground: 215 16% 62%;
+    --accent: 30 80% 67%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 15 76% 60%;
+    --radius: 0.75rem;
+    --glass-bg: rgba(26, 26, 46, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink text-text antialiased;
+    font-family: 'Manrope', 'system-ui', sans-serif;
+    overflow-x: hidden;
+  }
+
+  * {
+    @apply border-line;
+  }
+
+  /* Subtle grain texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    @apply bg-teal text-ink;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(26, 26, 46, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .section-padding {
+    padding: clamp(80px, 10vh, 120px) clamp(24px, 8vw, 120px);
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs tracking-wider uppercase flex items-center gap-2;
+    color: #35D0C0;
+  }
+
+  .eyebrow .dot {
+    @apply w-1.5 h-1.5 rounded-full animate-pulse;
+    background: #FF5A4E;
+    box-shadow: 0 0 8px #FF5A4E;
+  }
+
+  .reveal {
+    @apply opacity-0 translate-y-6 transition-all duration-700 ease-out;
+  }
+
+  .reveal.in {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .skill-card {
+    @apply bg-panel border-line rounded-lg p-4 flex items-center gap-3 transition-all duration-200;
+  }
+
+  .skill-card:hover {
+    @apply -translate-y-1 border-teal bg-panel-2;
+  }
+
+  .skill-card:hover .skill-icon {
+    @apply text-teal;
+  }
+
+  .proj-card {
+    @apply rounded-mockup overflow-hidden border-line bg-panel transition-all duration-300 cursor-pointer;
+  }
+
+  .proj-card:hover {
+    @apply -translate-y-1.5 border-teal;
+  }
+
+  .play-overlay {
+    @apply absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 z-10;
+  }
+
+  .proj-card:hover .play-overlay {
+    @apply opacity-100;
+  }
+
+  .play-btn {
+    @apply w-[52px] h-[52px] rounded-full border-teal backdrop-blur-sm flex items-center justify-center text-teal text-2xl;
+    background: rgba(10, 12, 16, 0.55);
+    border-width: 1px;
+  }
+
+  .info-ic {
+    @apply w-9 h-9 rounded-lg bg-panel border-line flex items-center justify-center text-teal;
+  }
+
+  .field-label {
+    @apply font-mono text-xs uppercase tracking-wider block mb-1.5;
+    color: #8A8F99;
+  }
+
+  .field-input {
+    @apply w-full bg-panel border-line rounded-lg px-4 py-3 text-text font-sans text-base transition-colors;
+  }
+
+  .field-input:focus {
+    @apply outline-none border-teal;
+  }
+
+  .btn {
+    @apply font-sans font-bold text-base px-5 py-3 rounded-full cursor-pointer inline-flex items-center gap-2 transition-all duration-200;
+    min-height: 44px;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply bg-teal text-ink;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 8px 24px -8px rgba(53, 208, 192, 0.6);
+  }
+
+  .btn-ghost {
+    @apply bg-transparent border-line text-text;
+  }
+
+  .btn-ghost:hover {
+    @apply border-teal text-teal;
+  }
+
+  .filter-btn {
+    @apply font-mono text-xs px-3.5 py-2 rounded-full border-line text-muted cursor-pointer transition-all duration-200;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    @apply border-teal text-teal;
+  }
+}
+
+@layer utilities {
+  .text-display-1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .text-display-2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.0;
+  }
+
+  .text-caption {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce-chevron {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes spin-loader {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce-chevron {
+  animation: bounce-chevron 2s ease-in-out infinite;
+}
+
+.animate-spin-loader {
+  animation: spin-loader 1s linear infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #181C23;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0C10;
+}
+
+/* Waveform (equalizer bars) */
+@keyframes bar {
+  0%, 100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.waveform span {
+  animation: bar 1.8s ease-in-out infinite;
+  transform-origin: bottom;
+}
